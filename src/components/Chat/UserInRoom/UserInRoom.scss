@@ -1,0 +1,20 @@
+.user {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  &__icon {
+    background-color: #4c7dfd;
+    height: 20px;
+    width: 20px;
+    color: white;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+  &__name {
+    font-size: 12px;
+  }
+}

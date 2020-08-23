@@ -1,63 +1,85 @@
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
+import DisplayChat from "./DisplayChat/DisplayChat";
+import FormChat from "./FormChat/FormChat";
+import TitleChart from "./TitleChat/TitleChat";
 
 import "./Chat.scss";
+import UserInRoom from "./UserInRoom/UserInRoom";
+import { Link } from "react-router-dom";
 
-export default function Chat() {
-  const [admin, setAdmin] = useState({});
-
-  const ENDPOIN = "http://localhost:4000/";
-
+let socket;
+export default function Chat({ userNow }) {
+  const [messenages, setMessages] = useState([]);
+  const [dataRoom, setDataRoom] = useState([]);
+  const ENDPOIN = "https://be-chat-real-time.herokuapp.com/";
+  if (userNow === undefined) {
+    window.location.replace("/");
+  }
+  const { name, room } = userNow;
+  // listen join
   useEffect(() => {
-    const socket = io(ENDPOIN);
-
-    socket.on("frist", (mes) => alert(mes));
-
-    socket.on("mes", (mes) => setAdmin(mes));
-
+    socket = io(ENDPOIN);
+    socket.emit("join", { name, room }, (err) => alert(err));
     return () => {
       socket.emit("disconnect");
       socket.off();
     };
+  }, [ENDPOIN, name, room]);
+  // // listen mes
+  useEffect(() => {
+    socket.on("mes", (mes) => {
+      setMessages([...messenages, mes]);
+    });
+  }, [messenages]);
+  useEffect(() => {
+    socket.on("dataRoom", (data) => setDataRoom(data));
   }, []);
 
-  return (
-    <div className="chat">
-      <div className="chat__title">
-        <span>Name room</span>
-      </div>
-      <div className="chat__display">
-        {admin.user && (
-          <div className="chat__content">
-            <span className="chat__user">{admin.user}</span>
-            <span className="chat__mes">{admin.mes}</span>
-            <span className="chat__time">10:10pm</span>
-          </div>
-        )}
+  const handleSendMes = (e, messenage, setMessage) => {
+    e.preventDefault();
+    socket.emit("sendMess", messenage, (err) => {
+      if (err) {
+        alert(err);
+      }
+    });
+    setMessage("");
+  };
 
-        <div className="chat__content">
-          <span className="chat__user">User1</span>
-          <span className="chat__mes">Are you ok???????</span>
-          <span className="chat__time">10:10pm</span>
+  ///trim
+  const currentName = name.trim().toLowerCase();
+
+  return (
+    <div className="container">
+      <div className="chat">
+        <div className="chat__title">
+          <TitleChart room={room} dataRoom={[]} />
+          <Link className="chat__leave" to="/">
+            Leave
+          </Link>
         </div>
-        <div className="chat__content chat__content--current">
-          <span className="chat__user chat__user--current">User2</span>
-          <span className="chat__mes chat__mes--current">
-            I'am OKkkkkkkkkk^^
-          </span>
-          <span className="chat__time chat__time--current">10:10pm</span>
+
+        <div className="chat__display">
+          {messenages.map((item, i) => {
+            return (
+              <DisplayChat
+                currentName={currentName}
+                name={item.user.nameTrim}
+                text={item.text}
+                time={item.time}
+                key={i}
+              />
+            );
+          })}
         </div>
+        <FormChat handleSendMes={handleSendMes} />
       </div>
-      <form className="chat__form">
-        <input
-          className="chat__input"
-          type="text"
-          placeholder="Write something..."
-        />
-        <button type="submit" className="chat__btn">
-          <i className="fas fa-paper-plane"></i>
-        </button>
-      </form>
+      <div className="room">
+        <TitleChart room={room} dataRoom={dataRoom} />
+        {dataRoom.map((item, i) => (
+          <UserInRoom name={item.nameTrim} key={i} />
+        ))}
+      </div>
     </div>
   );
 }

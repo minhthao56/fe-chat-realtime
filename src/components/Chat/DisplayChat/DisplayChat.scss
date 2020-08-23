@@ -1,0 +1,41 @@
+.display {
+  &__user {
+    font-size: 10px;
+    background-color: #4c7dfd;
+    color: white;
+    display: block;
+    border-radius: 20px;
+    padding: 2px 5px;
+    margin-bottom: 2px;
+    &--current {
+      color: #444444;
+      background-color: #eee;
+    }
+  }
+
+  &__mes {
+    padding: 5px 10px;
+    border-radius: 100px;
+    border-width: 1px;
+    background-color: #eee;
+    &--current {
+      color: white;
+      background-color: #4c7dfd;
+    }
+    font-size: 13px;
+  }
+  &__time {
+    font-size: 9px;
+    font-weight: 700;
+    color: #aaaaaa;
+  }
+  &__content {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    &--current {
+      align-items: flex-end;
+    }
+  }
+}

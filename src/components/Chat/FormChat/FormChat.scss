@@ -1,0 +1,30 @@
+.form {
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  &__input {
+    flex: 1;
+    height: 30px;
+    border-radius: 32px;
+    border: none;
+    background-color: #eeeeee;
+    padding-left: 10px;
+    font-family: "Montserrat", sans-serif;
+    &::placeholder {
+      font-family: "Montserrat", sans-serif;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+  &__btn {
+    height: 32px;
+    width: 32px;
+    border-radius: 32px;
+    border: none;
+    color: white;
+    background-color: #4c7dfd;
+    margin-left: 5px;
+  }
+}
