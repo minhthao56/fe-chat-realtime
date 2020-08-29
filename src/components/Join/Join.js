@@ -26,31 +26,33 @@ export default function Join({ passUserToApp }) {
   };
 
   return (
-    <div className="join">
-      <div className="join__title">
-        <span>Chat Room !!!</span>
+    <div className="container-join">
+      <div className="join">
+        <div className="join__title">
+          <span>Chat Room !!!</span>
+        </div>
+        <form className="join__form" onSubmit={hanldeSubmitUser}>
+          <input
+            type="text"
+            placeholder="Your name"
+            className="join__input"
+            value={name}
+            onChange={hanleChangeName}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Room"
+            className="join__input"
+            value={room}
+            onChange={hanleChangeRoom}
+            required
+          />
+          <button type="submit" className="join__btn">
+            Go To Room
+          </button>
+        </form>
       </div>
-      <form className="join__form" onSubmit={hanldeSubmitUser}>
-        <input
-          type="text"
-          placeholder="Your name"
-          className="join__input"
-          value={name}
-          onChange={hanleChangeName}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Room"
-          className="join__input"
-          value={room}
-          onChange={hanleChangeRoom}
-          required
-        />
-        <button type="submit" className="join__btn">
-          Go To Room
-        </button>
-      </form>
     </div>
   );
 }

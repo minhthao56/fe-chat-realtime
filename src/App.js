@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Chat from "./components/Chat/Chat";
 import Join from "./components/Join/Join";
-import "./App.css";
+import "./App.scss";
 
 export default function App() {
   const [userNow, setUserNow] = useState();
